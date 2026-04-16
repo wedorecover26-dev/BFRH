@@ -36,7 +36,7 @@ export default function Contact() {
                 Get in Touch
               </h3>
               <p className="mt-2 text-charcoal-light">
-                Reach out to Erika Hasty and our team. We&rsquo;re happy to
+                Reach out to our team. We&rsquo;re happy to
                 answer any questions about our program.
               </p>
             </div>
