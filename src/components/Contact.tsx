@@ -4,11 +4,42 @@ import { useState, type FormEvent } from "react";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // Frontend-only for now — no backend submission
-    setSubmitted(true);
+    setError(null);
+    setSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    const payload = {
+      name: String(formData.get("name") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      message: String(formData.get("message") ?? ""),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        throw new Error(data?.error ?? "Something went wrong. Please try again.");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -51,8 +82,8 @@ export default function Contact() {
               <ContactDetail
                 icon="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
                 label="Email"
-                href="mailto:wedorecover@betterfuture26.com"
-                text="wedorecover@betterfuture26.com"
+                href="mailto:wedorecover26@betterfuture26.com"
+                text="wedorecover26@betterfuture26.com"
               />
             </div>
           </div>
@@ -153,11 +184,17 @@ export default function Contact() {
                     />
                   </div>
                 </div>
+                {error && (
+                  <p className="mt-6 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                    {error}
+                  </p>
+                )}
                 <button
                   type="submit"
-                  className="mt-6 w-full rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-brown-dark shadow hover:bg-gold-light transition-colors focus:outline-none focus:ring-2 focus:ring-gold-light focus:ring-offset-2 sm:w-auto"
+                  disabled={submitting}
+                  className="mt-6 w-full rounded-full bg-gold px-8 py-3.5 text-base font-semibold text-brown-dark shadow hover:bg-gold-light transition-colors focus:outline-none focus:ring-2 focus:ring-gold-light focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed sm:w-auto"
                 >
-                  Send Message
+                  {submitting ? "Sending…" : "Send Message"}
                 </button>
               </form>
             )}

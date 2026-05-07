@@ -44,10 +44,10 @@ export default function Footer() {
               (316) 665-5226
             </a>
             <a
-              href="mailto:wedorecover@betterfuture26.com"
+              href="mailto:wedorecover26@betterfuture26.com"
               className="hover:text-gold-light transition-colors"
             >
-              wedorecover@betterfuture26.com
+              wedorecover26@betterfuture26.com
             </a>
           </div>
           <p className="text-sm text-cream/40">

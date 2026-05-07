@@ -27,4 +27,4 @@ Next.js 16 App Router with React 19, TypeScript, and Tailwind CSS v4. Single-pag
 - No external images — gradients, SVG icons, and colored elements only
 - Warm gold/amber/brown color palette throughout; no dark mode
 - Contact form is frontend-only (no backend submission yet)
-- Domain: betterfuture26.com | Contact: wedorecover@betterfuture26.com | Phone: (316) 665-5226
+- Domain: betterfuture26.com | Contact: wedorecover26@betterfuture26.com | Phone: (316) 665-5226
